@@ -37,6 +37,7 @@ def main
     'hourly_rate' => Money.new(0, 'USD'),
     'header' => %w[Description Start End Hours Rounded Rate Amount],
     'bill_from' => config['company'],
+    'bank_details' => config['bank'],
     'items' => [],
     'summary' => {}
   }
@@ -55,7 +56,7 @@ def main
       invoice_save = "archive/invoice-#{invoice['number']}-#{group.first['Client'].tr('^A-Za-z0-9', '')}."
     end
 
-    hours = group.map{|r| hmsToFloat(r['Duration'])}.inject(:+)
+    hours = group.map{|r| msToFloat(r['Duration'])}.inject(:+)
     amount = invoice['hourly_rate'] * round_number(hours.round(2))
     project = group.first['Project'] || 'C&C'
     invoice['total'] += amount
@@ -170,6 +171,14 @@ def hmsToFloat(str)
   sign = (str.chr == '-') ? str.slice!(0) : ''
   parts = str.split(':').map(&:to_f)
   (sign+(parts[0]+(parts[1]/60)+(parts[2]/3600)).to_s).to_f
+end
+
+def msToFloat(str)
+  # remove the " min" from the string "30:00 min"
+  new_str=str.slice(0..-5)
+  sign = (new_str.chr == '-') ? new_str.slice!(0) : ''
+  parts = new_str.split(':').map(&:to_f)
+  (sign+((parts[0]/60)+(parts[1]/3600)).to_s).to_f
 end
 
 #
