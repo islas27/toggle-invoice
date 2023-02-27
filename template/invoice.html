@@ -65,11 +65,18 @@
           padding: 8px 10px;
         }
 
+        .bank-details {
+           margin-top: 60px;
+           margin-bottom: 0px;
+           margin-left: auto;
+           margin-right: auto;
+        }
+
         .bottom table,
         .summary table {
           width: 213px;
           margin-left: 527px;
-          margin-top: 20px;
+          margin-top: 100px;
         }
 
         .bottom p,
@@ -194,5 +201,40 @@
             </TR>
          </TABLE>
       </DIV>
+      {% if bank_details.enabled %}
+         <DIV class="content">
+            <TABLE width="687" class="bank-details">
+               <TR class="header bold">
+                  <TD colspan=2 width="100"><P>Bank Details</P></TD>
+               </TR>
+               <TR>
+                  <TD><P>Bank Name</P></TD>
+                  <TD align="right"><P>{{ bank_details['name'] }}</P></TD>
+               </TR>
+               <TR>
+                  <TD><P>Bank SWIFT Number</P></TD>
+                  <TD align="right"><P>{{ bank_details['swift_number'] }}</P></TD>
+               </TR>
+               <TR>
+                  <TD><P>Bank Account Number</P></TD>
+                  <TD align="right"><P>{{ bank_details['account_number'] }}</P></TD>
+               </TR>
+               <TR>
+                  <TD><P>Recipient Name</P></TD>
+                  <TD align="right"><P>{{ bank_details['recipient_name'] }}</P></TD>
+               </TR>
+               <TR>
+                  <TD><P>Recipient Home Address</P></TD>
+                  <TD align="right">
+                     <P>
+                        {{ bank_details['recipient_address1'] }}
+                        <br />
+                        {{ bank_details['recipient_address2'] }}
+                     </P>
+                  </TD>
+               </TR>
+            </TABLE>
+         </DIV>
+      {% endif %}
    </BODY>
  </HTML>

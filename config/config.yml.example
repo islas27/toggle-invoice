@@ -6,6 +6,14 @@ company:
  locality: 'Fort Yukon, AK 99740'
  email: 'me@example.com'						# This is actually required to access Toggl Reports API.  Don't ask.
  phone: '555-555-5555'
+bank:
+  enabled: true
+  name: "FIRST BANK SOMETHING SOMETHING"
+  swift_number: "ABCDEFG"
+  account_number: "123456789"
+  recipient_name: "JOHN SMITH"
+  recipient_address1: "123 Main St."
+  recipient_address2: "Los Angeles, CA, USA. Zipcode 12345"
 toggl:
  api_token: '0123456789abcdef0123456789abcdef'	# API token available in account settings area
  workspace: '123456'							# You can find this in the query string in Reports pages of the app
