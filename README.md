@@ -50,6 +50,14 @@ Then, edit:
 - On Windows, you will to have manually install wkhtmltopdf (to a path without spaces, such as C:/tools/wkhtmltopdf), set the path to wkhtmltopdf.exe in config/pdfkit.rb, and uncomment the `require './config/pdfkit.rb'` line in toggl-invoice.rb. See [Installing wkhtmltopdf](https://github.com/pdfkit/pdfkit/wiki/Installing-WKHTMLTOPDF#windows).
 - The PDF files are generated using PDFKit and wkthmltopdf. There are a vast array of options to modify how the PDF files is generated. I picked a set of options which worked well for me, generating nice-looking files, with a small foot print. However, you may want to tweak them for your needs. The options are passed to PDFKit around [Line 118 of toggl-invoice.rb](https://github.com/eimajenthat/toggl-invoice/blob/master/toggl-invoice.rb#L118). I have included a listing from wkhtmltopdf, showing all the available options in [pdfoptions.txt](https://github.com/eimajenthat/toggl-invoice/blob/master/pdfoptions.txt). If you put together a set of options you feel is objectively superior, feel free to submit a [pull request](https://github.com/eimajenthat/toggl-invoice/compare/).
 
+## New Notes:
+
+I plan to migrate this to JS at some point. So here some notes on future development.
+
+- Fortunatelly I can keep using the same template, as Liquid style templates also have a processor available in JS: https://liquidjs.com/
+
+- Will need to find a HTML => PDF processor. Possible option: https://codingbeautydev.com/blog/javascript-convert-html-to-pdf/
+
 ## Forking
 
 This is GitHub, and this is open source software. You are free to fork, use, and modify the code to your needs. I would appreciate a pull request if you fix any bugs, or make any changes others might find useful.
