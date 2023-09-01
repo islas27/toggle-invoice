@@ -29,9 +29,11 @@ def main
       'config.yml'
     )
   )
+  date_offset = 1 # X days in the future
+  invoice_date = Time.now + (date_offset * 24 * 60 * 60)
   invoice = {
-    'date' => Time.now.strftime('%b %-d, %Y'),
-    'number' => Time.now.strftime('%Y%m%d'),
+    'date' => invoice_date.strftime('%b %-d, %Y'),
+    'number' => invoice_date.strftime('%Y%m%d'),
     'bill_to' => '',
     'total' => Money.new(0, 'USD'),
     'hourly_rate' => Money.new(0, 'USD'),
@@ -73,19 +75,21 @@ def main
     invoice['summary'][project] += amount
   end
 
-  # add the service fee
-  invoice['total'] += Money.new(2500, "USD")
-  invoice['items'] << [
-    "Service Fee",
-    invoice['items'][invoice['items'].length - 1][1],
-    invoice['items'][invoice['items'].length - 1][2],
-    1,
-    1,
-    '$25.00',
-    '$25.00'
-  ]
-  invoice['summary']['C&C'] ||= 0
-  invoice['summary']['C&C'] += Money.new(2500, 'USD')
+  # Add recurring expenses
+  config['recurring_expenses'].each do |item|
+    invoice['total'] += Money.new(item['amount']*100, "USD")
+    invoice['items'] << [
+      item['name'],
+      invoice['items'][invoice['items'].length - 1][1],
+      invoice['items'][invoice['items'].length - 1][2],
+      1,
+      1,
+      Money.new(item['amount']*100, "USD").format,
+      Money.new(item['amount']*100, "USD").format
+    ]
+    invoice['summary']['MyCnC'] ||= 0
+    invoice['summary']['MyCnC'] +=  Money.new(item['amount']*100, "USD")
+  end
 
   # Generate Text Invoice
   tt = {

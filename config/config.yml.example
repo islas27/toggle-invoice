@@ -14,6 +14,10 @@ bank:
   recipient_name: "JOHN SMITH"
   recipient_address1: "123 Main St."
   recipient_address2: "Los Angeles, CA, USA. Zipcode 12345"
+recurring_expenses:
+  - 1:
+    name: 'Service Fee'
+    amount: 25
 toggl:
  api_token: '0123456789abcdef0123456789abcdef'	# API token available in account settings area
  workspace: '123456'							# You can find this in the query string in Reports pages of the app
