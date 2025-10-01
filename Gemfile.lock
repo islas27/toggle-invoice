@@ -1,8 +1,12 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    base64 (0.3.0)
+    bigdecimal (3.1.8)
+    csv (3.3.5)
+    file_exists (0.2.0)
     i18n (0.7.0)
-    liquid (3.0.6)
+    liquid (5.8.7)
     money (6.7.1)
       i18n (>= 0.6.4, <= 0.7.0)
       sixarm_ruby_unaccent (>= 1.1.1, < 2)
@@ -14,6 +18,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  base64
+  bigdecimal
+  csv
+  file_exists
   liquid
   money
   pdfkit

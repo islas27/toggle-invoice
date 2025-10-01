@@ -7,6 +7,7 @@ require 'money'
 require 'liquid'
 require 'yaml'
 require 'pdfkit'
+require 'file_exists'
 
 I18n.config.enforce_available_locales = false
 
@@ -22,13 +23,7 @@ end
 
 def main
 
-  config = YAML.load_file(
-    File.join(
-      File.dirname(__FILE__),
-      'config',
-      'config.yml'
-    )
-  )
+  config = YAML.load_file('config/config.yml')
   date_offset = 0 # X days in the future
   invoice_date = Time.now + (date_offset * 24 * 60 * 60)
   invoice = {
