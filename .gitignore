@@ -9,6 +9,18 @@ Icon
 # Thumbnails
 ._*
 
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+*.log
+
+# Claude Code
+.claude/settings.local.json
+memory/
+
 # Project specific
 config/*.yml
 archive/*

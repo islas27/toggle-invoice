@@ -1,0 +1,12 @@
+{
+  "name": "toggl-invoice",
+  "type": "module",
+  "bin": {
+    "toggl-invoice": "./toggl-invoice.js"
+  },
+  "dependencies": {
+    "csv-parse": "^5",
+    "js-yaml": "^4",
+    "pdfmake": "^0.2"
+  }
+}

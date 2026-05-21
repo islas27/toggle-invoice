@@ -1,73 +1,58 @@
 # Toggl-Invoice
 
-A Ruby script to generate invoices based on Toggl timesheets, in HTML, PDF, and TXT.
+A Node.js CLI tool that generates PDF invoices from Toggl timesheet CSV exports.
 
 ## Disclaimer
 
-I am not affiliated in any way with Toggl, although they seem like nice folks. If you encounter a bug with this script, it's not their fault. On the other hand, if you encounter a bug with their application, it's not my fault. Please route any questions accordingly.
+I am not affiliated in any way with Toggl, although they seem like nice folks. If you encounter a bug with this script, it's not their fault. On the other hand, if you encounter a bug with their application, it's not my fault.
 
-For Toggl bugs: http://support.toggl.com/
+For Toggl support: http://support.toggl.com/
 
-For bugs with my script: https://github.com/RomAnoX/toggle-invoice/issues
+For bugs with this script: https://github.com/RomAnoX/toggle-invoice/issues
 
 ## Requirements
 
-- Ruby
-- a Toggl account (free or paid)
-- check the Gemfile for more
+- Node.js
+- A Toggl account (free or paid)
 
 ## Setup
 
 ```bash
-# After cloning the repo, navigate to it in the terminal
-gem install bundler
-bundle install
-# Dependency work done, prepare setup
-# and add a folder to put the generated files
+npm install
 cp config/config.yml.example config/config.yml
 cp config/clients.yml.example config/clients.yml
-touch archive
 ```
 
-Then, edit:
-
-1. `toggl-invoice/config/config.yml` to reflect your company identity. All fields required, though an empty string would probably be okay.
-2. `toggl-invoice/config/clients.yml` with your client's details.
+Edit `config/config.yml` to reflect your company and bank details, and `config/clients.yml` with your clients and their hourly rates.
 
 ## Usage
 
-1. Download a CSV report from Toggl.
-2. Run `bundle exec toggl-invoice report.csv` withe the terminal
-3. You're done. The generated invoice files are saved to the archive/ directory.
-4. I like to save my raw CSV there as well (add a date code to the file name so it doesn't overwrite another CSV). I guess I could have the script do this. Maybe later.
+1. In Toggl, export a **Detailed** CSV report (not Summary) for the billing period.
+2. Run the script:
+   ```bash
+   node toggl-invoice.js Toggl_time_entries.csv
+   ```
+3. The generated PDF is saved to the `archive/` directory.
 
-## Notes (from original autor)
+## Config
 
-- Right now, you need a CSV export from Toggl for this to work. They're supposed to be working on a reporting API (https://github.com/toggl/toggl_api_docs/issues/3) but it's not ready yet. Do the Detailed report, not the Summary. The summary puts everything in a single line item. The detailed one gives you each interval. Toggl-Invoice will combine lines with the same description, and add up the time (the same way the PDF sumamry does).
-- You'll want to setup your config.yml and client.yml before generating invoices.
-- I wrote this for myself, because I needed to generate invoices, not as an example of perfect coding for all to see. Also, I'm new Ruby, and used this as a chance to learn it better. Expect rough edges, and feel free to smooth them out.
-- In clients.yml, the key for each client (in the example, client keys are 'Initech', 'Intertrode', and 'John Smith'), should precisely match the client names used in your timesheet CSV. Spaces are fine. Quotes do not seem to be required. Not sure if they're allowed.
-- On Windows, you will to have manually install wkhtmltopdf (to a path without spaces, such as C:/tools/wkhtmltopdf), set the path to wkhtmltopdf.exe in config/pdfkit.rb, and uncomment the `require './config/pdfkit.rb'` line in toggl-invoice.rb. See [Installing wkhtmltopdf](https://github.com/pdfkit/pdfkit/wiki/Installing-WKHTMLTOPDF#windows).
-- The PDF files are generated using PDFKit and wkthmltopdf. There are a vast array of options to modify how the PDF files is generated. I picked a set of options which worked well for me, generating nice-looking files, with a small foot print. However, you may want to tweak them for your needs. The options are passed to PDFKit around [Line 118 of toggl-invoice.rb](https://github.com/eimajenthat/toggl-invoice/blob/master/toggl-invoice.rb#L118). I have included a listing from wkhtmltopdf, showing all the available options in [pdfoptions.txt](https://github.com/eimajenthat/toggl-invoice/blob/master/pdfoptions.txt). If you put together a set of options you feel is objectively superior, feel free to submit a [pull request](https://github.com/eimajenthat/toggl-invoice/compare/).
+### `config/config.yml`
 
-## New Notes:
+Defines your company info, bank details (shown at the bottom of the invoice if `enabled: true`), and any recurring expenses to append to every invoice.
 
-I plan to migrate this to JS at some point. So here some notes on future development.
+Recurring expenses require `name`, `amount` (in dollars), and `category` (the summary group label).
 
-- Fortunatelly I can keep using the same template, as Liquid style templates also have a processor available in JS: https://liquidjs.com/
+### `config/clients.yml`
 
-- Will need to find a HTML => PDF processor. Possible option: https://codingbeautydev.com/blog/javascript-convert-html-to-pdf/
+Each key must exactly match the **Client** name in your Toggl CSV. Each entry needs `name`, `street`, `locality`, and `rate` (hourly, in dollars).
 
-## Forking
+## Notes
 
-This is GitHub, and this is open source software. You are free to fork, use, and modify the code to your needs. I would appreciate a pull request if you fix any bugs, or make any changes others might find useful.
+- Use the **Detailed** report export from Toggl — the Summary report collapses everything into one line. The Detailed report gives individual intervals, which this tool merges by description and sums the durations.
+- Hours are rounded to the nearest 0.5, with a minimum of 0.5.
+- All rows in a single CSV must belong to the same client.
+- The `Client` and `Project` columns are required on every row — the script will error rather than guess defaults.
 
 ## License
 
-Copyright 2013 James Adams
-
-This software is licensed under the MIT license, which you can read here:
-
-[LICENSE](https://github.com/eimajenthat/kashoo-php/blob/master/LICENSE)
-
-This is the same license used by jQuery and a number of open source projects. My understanding is that it should allow you to use, modify, distribute, or not distribute, the code in pretty much any way you see fit. If you are in doubt about the license, feel free to contact me.
+MIT License. See [LICENSE](LICENSE.md). Originally created by James Adams; JS rewrite by Jonathan Islas.
